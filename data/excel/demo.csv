@@ -1,0 +1,3 @@
+﻿API Status,Create By,Scope,Priority,Case no.,Role,API URL,Method,User Story,Request Body
+Done,dong.lee,function,High,ClientCategory01,SYSADMIN,/resource/api/v1/clientcategories,POST,API Search Client Category table,"{""pageIndex"":1,""pageSize"":1000,""isAscending"":true,""filters"":{""FirstLoad"":[]}}"
+Done,dong.lee,function,High,ClientCategory01,SYSADMIN,/resource/api/v1/123,POST,API Search Client Category table,"{""pageIndex"":1,""pageSize"":1000,""isAscending"":true,""filters"":{""FirstLoad"":[]}}"
