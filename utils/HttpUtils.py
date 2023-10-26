@@ -1,25 +1,36 @@
 import requests
+import json
 
 
 class HttpRequest:
     client = requests.session()
+    headers = {"Content-Type": "application/json",
+               "charset": "UTF-8",
+               "Authori-Zation": "Bearer"
+               }
 
     def __init__(self):
-        pass
+        HttpRequest.getToken()
 
-    def doGet(self, headers, url):
-        res = self.client.get(url=url, headers=headers)
-        print(res.status_code)
-
-    def doPost(self):
+    # 获取token
+    @classmethod
+    def getToken(cls):
         url = "http://dong/adminapi/login"
-        headers = {"Content-Type": "application/json"}
-        data1 = {"account": "admin", "pwd": "19931022ld", "key": "6538b2988c955", "captchaType": "blockPuzzle",
-                 "captchaVerification": ""}
-        res = self.client.post(url=url, headers=headers, data=data1)
+        data1 = {"account": "admin", "pwd": "19931022ld", "key": "6538b2988c955", "captchaType": "blockPuzzle"}
+        resToken = HttpRequest.doPost(url, data1)
+        resTokenJson = resToken.json()
+        sessiontoken = resTokenJson["data"]["token"]
+        global Token
+        return sessiontoken
+
+    @classmethod
+    def doGet(cls, url1):
+        return cls.client.get(url=url1, headers=cls.headers)
+
+    @classmethod
+    def doPost(cls, url, postBody):
+        return cls.client.post(url=url, headers=cls.headers, data=json.dumps(postBody))
 
 
 if __name__ == '__main__':
     HttpRequest()
-
-
