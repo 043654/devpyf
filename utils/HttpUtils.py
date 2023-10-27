@@ -1,13 +1,12 @@
 import requests
 import json
 
+from utils.Common import Commons
+
 
 class HttpRequest:
     client = requests.session()
-    headers = {"Content-Type": "application/json",
-               "charset": "UTF-8",
-               "Authori-Zation": "Bearer"
-               }
+    Jsonheaders = {"Content-Type": "application/json", "charset": "UTF-8"}
 
     def __init__(self):
         HttpRequest.getToken()
@@ -15,22 +14,23 @@ class HttpRequest:
     # 获取token
     @classmethod
     def getToken(cls):
-        url = "http://dong/adminapi/login"
-        data1 = {"account": "admin", "pwd": "19931022ld", "key": "6538b2988c955", "captchaType": "blockPuzzle"}
-        resToken = HttpRequest.doPost(url, data1)
+        filepath = Commons.getFilePath()
+        configinfo = Commons.readYaml(filepath + "\\config\\config.yaml")
+        url = configinfo["token"]
+        data1 = configinfo["login"]
+        resToken = cls.client.post(url, data1)
         resTokenJson = resToken.json()
         sessiontoken = resTokenJson["data"]["token"]
-        global Token
-        return sessiontoken
+        cls.Jsonheaders = {"Content-Type": "application/json",
+                           "charset": "UTF-8",
+                           "Authori-Zation": "Bearer" + " " + sessiontoken
+                           }
+        return cls.Jsonheaders
 
     @classmethod
     def doGet(cls, url1):
-        return cls.client.get(url=url1, headers=cls.headers)
+        return cls.client.get(url=url1, headers=HttpRequest.getToken())
 
     @classmethod
     def doPost(cls, url, postBody):
-        return cls.client.post(url=url, headers=cls.headers, data=json.dumps(postBody))
-
-
-if __name__ == '__main__':
-    HttpRequest()
+        return cls.client.post(url=url, headers=HttpRequest.getToken(), data=json.dumps(postBody))

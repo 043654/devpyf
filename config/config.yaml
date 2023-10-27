@@ -1,4 +1,8 @@
 baseurl:
-  wwwwwww
+  http://dong
 port:
-  8080
+  80
+token:
+  http://dong/adminapi/login
+login:
+  {"account": "admin", "pwd": "19931022ld", "key": "6538b2988c955", "captchaType": "blockPuzzle"}
